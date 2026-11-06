@@ -1,0 +1,12 @@
+﻿{
+    "Timestamp":  "2026-11-06 11:07:20",
+    "Mode":  "readonly",
+    "BackupDir":  "D:\\SF\\WB\\workbuddy文件\\2026-11-05-10-01-17\\大白菜清理工具\\DBC_Sweeper_Report\\Backup_20261106_110703",
+    "Quarantine":  {
+                       "IsPresent":  false
+                   },
+    "Actions":  [
+
+                ],
+    "Rollback":  "把 Quarantine_* 下的文件按原路径移回即可；Backup_* 下有 .reg / .xml / .lnk / hosts 备份，双击 .reg 导入、Import-ScheduledTask 导入 XML 可恢复"
+}

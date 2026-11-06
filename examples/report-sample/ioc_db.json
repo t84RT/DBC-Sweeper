@@ -1,0 +1,103 @@
+﻿{
+    "GeneratedAt":  "2026-11-06 11:07:20",
+    "Tool":  "DBC Sweeper",
+    "Stage":  {
+                  "C":  "落地：推广软件 / 注册表 / 服务 / 驱动 / 启动项 / 快捷方式 / hosts / 收藏夹",
+                  "E":  "残留：旧系统 / PE 目录 / 临时文件",
+                  "D":  "浏览器：首次运行配置 / 会话 / 策略 / 通知 / 扩展 / 缓存",
+                  "B":  "部署期：无人值守文件 / 随机名启动器 / 载荷分包 / UAC",
+                  "A":  "源头：U 盘 / PE 镜像 / 制作工具"
+              },
+    "Patterns":  {
+                     "DomainRx":  "(?i)(2345\\.com|2354mt\\.com|hao123\\.com|hao\\.360\\.cn|999\\.com|dabaicai\\.(com|cn)|winbaicai\\.com|laomaotao\\.(net|com)|diannaodian\\.com|2345\\.cn|wangpai\\.2345\\.cn|\\bby\\.[0-9a-z]{4,8}\\.(com|cn|net)\\b)",
+                     "BrowserUrlRx":  "(?i)(2345\\.com|2354mt\\.com|hao123\\.com|999\\.com|by\\.[0-9a-z]{4,8}\\.)",
+                     "ProcRx":  "(?i)(^|\\\\)(2345Update|2345Svc|2345Explorer|2345PCSafe|360Safe|360se|360sd|360Chrome|QHSafe|QHActiveDefense|QQPCMgr|kuwo|iqiyi|QiyiPlayer|laohuangli|wannianli|Ludashi|DrvInst|DriverGenius|kuaizip|NUML0CK)(\\.exe)?$"
+                 },
+    "PromoDirs":  [
+                      "360",
+                      "360Safe",
+                      "360sd",
+                      "360Chrome",
+                      "360se",
+                      "360Soft",
+                      "2345Soft",
+                      "2345PCSafe",
+                      "2345Explorer",
+                      "2345",
+                      "Tencent\\QQPCMgr",
+                      "kuwo",
+                      "iqiyi",
+                      "QiyiPlayer",
+                      "laohuangli",
+                      "wannianli",
+                      "Ludashi",
+                      "DriverGenius",
+                      "DrvInst",
+                      "kuaizip"
+                  ],
+    "RegRoots":  [
+                     "HKCU:\\Software\\2345.com",
+                     "HKCU:\\Software\\2345",
+                     "HKLM:\\SOFTWARE\\2345",
+                     "HKLM:\\SOFTWARE\\WOW6432Node\\2345",
+                     "HKLM:\\SOFTWARE\\360Safe",
+                     "HKLM:\\SOFTWARE\\WOW6432Node\\360Safe",
+                     "HKLM:\\SOFTWARE\\360",
+                     "HKLM:\\SOFTWARE\\WOW6432Node\\360"
+                 ],
+    "UsbMarks":  [
+                     "DBC8x64.ISO",
+                     "DBC8x64.WIM",
+                     "DBCMenu",
+                     "PETools",
+                     "DBC.INI",
+                     "DBC",
+                     "grldr",
+                     "fb.cfg",
+                     "DBC32.ISO"
+                 ],
+    "ToolNames":  [
+                      "DaBaiCai",
+                      "大白菜",
+                      "LaoMaoTao",
+                      "老毛桃",
+                      "DianNaoDian",
+                      "电脑店",
+                      "ChenFeng",
+                      "晨枫"
+                  ],
+    "WhiteList":  [
+                      "Microsoft",
+                      "Windows",
+                      "WindowsApps",
+                      "WinSxS",
+                      "System32",
+                      "SysWOW64",
+                      "Python",
+                      "PlatformIO",
+                      "Arduino",
+                      "Code",
+                      "Git",
+                      "nodejs",
+                      "Java",
+                      "CH340",
+                      "CP210",
+                      "FTDI",
+                      "Silicon Labs",
+                      "Espressif",
+                      "Realtek",
+                      "Intel",
+                      "NVIDIA",
+                      "AMD"
+                  ],
+    "KnownChannels":  [
+                          "2345explorer",
+                          "360se",
+                          "360sd",
+                          "EdgeSetup",
+                          "2345PCSafe",
+                          "WPS",
+                          "iqiyi",
+                          "kuwo"
+                      ]
+}

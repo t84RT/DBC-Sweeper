@@ -1,0 +1,212 @@
+﻿[
+    {
+        "Stage":  "B 部署期",
+        "Level":  "Review",
+        "Category":  "UAC 状态",
+        "Name":  "管理员提权不弹窗",
+        "Detail":  "ConsentPromptBehaviorAdmin=0，提权静默通过。常与 PE 无人值守脚本同现",
+        "Path":  "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System",
+        "Action":  "确认后可改为 5（默认：提示同意）",
+        "SizeMB":  ""
+    },
+    {
+        "Stage":  "A 源头",
+        "Level":  "Review",
+        "Category":  "装机记录",
+        "Name":  "存在大白菜装机记录键",
+        "Detail":  "Version=6.0.2604.3；镜像=Win11_25H2_Pro_Chinese_Simplified_x64_v2.iso；渠道号 8 项：DriveTheLife=57459 , Taobao=cbdh956 , chaojituzi=lm , 2345explorer=511097 , 360se=5000783 , EdgeSetup=1773998236 , 360safe=5000782 , Chrome=1773998236",
+        "Path":  "HKLM:\\SOFTWARE\\DaBaiCai",
+        "Action":  "这是溯源证据。删除它不会清除任何广告，但能确认系统来源；建议保留以备查",
+        "SizeMB":  ""
+    },
+    {
+        "Stage":  "A 源头",
+        "Level":  "Review",
+        "Category":  "镜像残留",
+        "Name":  "疑似装机镜像：Win11_25H2_Pro_Chinese_Simplified_x64_v2.iso",
+        "Detail":  "7897 MB；就是这次装机的源文件",
+        "Path":  "D:\\Win11_25H2_Pro_Chinese_Simplified_x64_v2.iso",
+        "Action":  "确认系统已装好、不需要回滚后再删；也可留作证据",
+        "SizeMB":  ""
+    },
+    {
+        "Stage":  "B 部署期",
+        "Level":  "Safe",
+        "Category":  "无人值守文件",
+        "Name":  "unattend.xml 命中大白菜装机特征",
+        "Detail":  "命中 RunSynchronousCommand x8、FirstLogonCommands x2、关闭 UAC 提示、启用 Administrator、启用 ploc 账户、指向随机名启动器；大小 2583 字节；写入时间 2026-11-03 10:21",
+        "Path":  "C:\\Windows\\Panther\\unattend.xml",
+        "Action":  "确认是 PE 装机残留后隔离（工具 -Quarantine 会移入隔离区）；OEM/企业部署也会写此文件，先看内容",
+        "SizeMB":  ""
+    },
+    {
+        "Stage":  "B 部署期",
+        "Level":  "Safe",
+        "Category":  "随机名载荷目录",
+        "Name":  "Vmaprlfxn（含加密分包）",
+        "Detail":  "命中 10 个 .img/.ext 分包，合计 450.3 MB；exe 0 个",
+        "Path":  "C:\\Windows\\Vmaprlfxn",
+        "Action":  "与公开逆向样本一致（随机名目录 + 11 个加密安装包）。系统目录，工具不代删；确认后建议在 PE 下处理或手动隔离",
+        "SizeMB":  ""
+    },
+    {
+        "Stage":  "C 落地",
+        "Level":  "Review",
+        "Category":  "近期安装",
+        "Name":  "火绒安全软件",
+        "Detail":  "安装日期=2026-11-03；发布者=北京火绒网络科技有限公司；版本=6.0.13.0",
+        "Path":  "Microsoft.PowerShell.Core\\Registry::HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\HuorongSysdiag",
+        "Action":  "对照清单确认是否自己装的；不是就走系统卸载，再用 Geek Uninstaller 扫残留",
+        "SizeMB":  ""
+    },
+    {
+        "Stage":  "C 落地",
+        "Level":  "Review",
+        "Category":  "近期安装",
+        "Name":  "CC Switch",
+        "Detail":  "安装日期=2026-11-03；发布者=ccswitch；版本=4.0.25",
+        "Path":  "Microsoft.PowerShell.Core\\Registry::HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{DF33B2A8-7877-42D0-AE54-C67F9DA1D085}",
+        "Action":  "对照清单确认是否自己装的；不是就走系统卸载，再用 Geek Uninstaller 扫残留",
+        "SizeMB":  ""
+    },
+    {
+        "Stage":  "C 落地",
+        "Level":  "Review",
+        "Category":  "近期安装",
+        "Name":  "AutoShop 版本 V4.12.0.2",
+        "Detail":  "安装日期=2026-11-03；发布者=Inovance Technology Co., Ltd；版本=V4.12.0.2",
+        "Path":  "Microsoft.PowerShell.Core\\Registry::HKEY_LOCAL_MACHINE\\SOFTWARE\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{5B4FF3A9-D03B-4911-83DF-3A28262438A0}_is1",
+        "Action":  "对照清单确认是否自己装的；不是就走系统卸载，再用 Geek Uninstaller 扫残留",
+        "SizeMB":  ""
+    },
+    {
+        "Stage":  "C 落地",
+        "Level":  "Review",
+        "Category":  "近期安装",
+        "Name":  "DTools Pro V1.20.0",
+        "Detail":  "安装日期=2026-11-03；发布者=Kinco；版本=1.20",
+        "Path":  "Microsoft.PowerShell.Core\\Registry::HKEY_LOCAL_MACHINE\\SOFTWARE\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{AE237AF1-5A01-4232-B15A-B53F2CF74720}",
+        "Action":  "对照清单确认是否自己装的；不是就走系统卸载，再用 Geek Uninstaller 扫残留",
+        "SizeMB":  ""
+    },
+    {
+        "Stage":  "C 落地",
+        "Level":  "Review",
+        "Category":  "近期安装",
+        "Name":  "EBpro V6.10.02.421s",
+        "Detail":  "安装日期=2026-11-03；发布者=Weintek Labs., Inc.；版本=",
+        "Path":  "Microsoft.PowerShell.Core\\Registry::HKEY_LOCAL_MACHINE\\SOFTWARE\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{EE198B2E-B0DD-4123-8E74-E1BBFEC8C8D8}_is1",
+        "Action":  "对照清单确认是否自己装的；不是就走系统卸载，再用 Geek Uninstaller 扫残留",
+        "SizeMB":  ""
+    },
+    {
+        "Stage":  "C 落地",
+        "Level":  "Review",
+        "Category":  "近期安装",
+        "Name":  "ima",
+        "Detail":  "安装日期=2026-11-03；发布者=The ima.copilot Authors；版本=2.6.16.5304",
+        "Path":  "Microsoft.PowerShell.Core\\Registry::HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\ima.copilot",
+        "Action":  "对照清单确认是否自己装的；不是就走系统卸载，再用 Geek Uninstaller 扫残留",
+        "SizeMB":  ""
+    },
+    {
+        "Stage":  "C 落地",
+        "Level":  "Review",
+        "Category":  "近期安装",
+        "Name":  "TRAE CN (User)",
+        "Detail":  "安装日期=2026-11-05；发布者=Beijing Yinli Catapult Technology Co., Ltd.；版本=3.4.15",
+        "Path":  "Microsoft.PowerShell.Core\\Registry::HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{98EB0EF0-1DE3-4838-B14A-3B0DC4570E8B}_is1",
+        "Action":  "对照清单确认是否自己装的；不是就走系统卸载，再用 Geek Uninstaller 扫残留",
+        "SizeMB":  ""
+    },
+    {
+        "Stage":  "C 落地",
+        "Level":  "Protect",
+        "Category":  "近期安装",
+        "Name":  "系统组件 / 运行库 56 项",
+        "Detail":  "发布者为微软等大厂，或属于 VC++ / .NET / WebView2 等运行库",
+        "Path":  "",
+        "Action":  "正常，无需处理",
+        "SizeMB":  ""
+    },
+    {
+        "Stage":  "C 落地",
+        "Level":  "Safe",
+        "Category":  "推广目录",
+        "Name":  "360sd  @ C:\\ProgramData",
+        "Detail":  "确认属于 2345/360 等推广软件",
+        "Path":  "C:\\ProgramData\\360sd",
+        "Action":  "-Quarantine 可移入隔离区（不是直接删除），确认无用后再清空隔离区释放空间",
+        "SizeMB":  ""
+    },
+    {
+        "Stage":  "C 落地",
+        "Level":  "Safe",
+        "Category":  "推广目录",
+        "Name":  "360Chrome  @ C:\\Users\\Administrator\\AppData\\Local",
+        "Detail":  "确认属于 2345/360 等推广软件",
+        "Path":  "C:\\Users\\Administrator\\AppData\\Local\\360Chrome",
+        "Action":  "-Quarantine 可移入隔离区（不是直接删除），确认无用后再清空隔离区释放空间",
+        "SizeMB":  ""
+    },
+    {
+        "Stage":  "C 落地",
+        "Level":  "Review",
+        "Category":  "代理设置",
+        "Name":  "系统代理处于启用状态",
+        "Detail":  "ProxyServer=127.0.0.1:7897；Override=localhost;127.*;192.168.*;10.*;172.16.*;172.17.*;172.18.*;172.19.*;172.20.*;172.21.*;172.22.*;172.23.*;172.24.*;172.25.*;172.26.*;172.27.*;172.28.*;172.29.*;172.30.*;172.31.*;*.local;\u003clocal\u003e",
+        "Path":  "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings",
+        "Action":  "大概率是你自己的代理工具。工具不会改代理；确认不是自己的再手动关",
+        "SizeMB":  ""
+    },
+    {
+        "Stage":  "C 落地",
+        "Level":  "Safe",
+        "Category":  "收藏夹",
+        "Name":  "大白菜官网.URL",
+        "Detail":  "收藏内容含推广域名（PE 会预置收藏夹文件）",
+        "Path":  "C:\\Users\\Administrator\\Favorites\\Links\\大白菜官网.URL",
+        "Action":  "-Fix 会把这些 .url 移入隔离区，不是删除",
+        "SizeMB":  ""
+    },
+    {
+        "Stage":  "C 落地",
+        "Level":  "Review",
+        "Category":  "文件关联",
+        "Name":  ".html 被指向 360seURL",
+        "Detail":  "UserChoice 带哈希校验，直接改注册表会被系统重置",
+        "Path":  "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.html\\UserChoice",
+        "Action":  "走「设置 → 应用 → 默认应用」改回 Edge/Chrome，工具不碰",
+        "SizeMB":  ""
+    },
+    {
+        "Stage":  "D 浏览器",
+        "Level":  "Safe",
+        "Category":  "脚本缓存",
+        "Name":  "Edge 缓存里含推广脚本 2 个",
+        "Detail":  "Code Cache\\js 中的编译缓存",
+        "Path":  "C:\\Users\\Administrator\\AppData\\Local\\Microsoft\\Edge\\User Data\\Default\\Code Cache\\js",
+        "Action":  "-Fix 会把这些文件移入隔离区；浏览器会自动重建缓存",
+        "SizeMB":  ""
+    },
+    {
+        "Stage":  "D 浏览器",
+        "Level":  "Review",
+        "Category":  "首次运行配置",
+        "Name":  "Chrome 存在 initial_preferences",
+        "Detail":  "大小 421617 字节，未命中推广特征",
+        "Path":  "C:\\Program Files\\Google\\Chrome\\Application\\initial_preferences",
+        "Action":  "大概率是 OEM 定制，可保留",
+        "SizeMB":  ""
+    },
+    {
+        "Stage":  "E 残留",
+        "Level":  "Protect",
+        "Category":  "临时目录",
+        "Name":  "Windows\\Temp 共 0 项",
+        "Detail":  "体积约 0 MB",
+        "Path":  "C:\\Windows\\Temp",
+        "Action":  "系统临时目录，工具不碰；要清就走「存储 → 临时文件」",
+        "SizeMB":  ""
+    }
+]

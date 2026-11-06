@@ -1,0 +1,229 @@
+﻿<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>大白菜装机残留排查报告</title>
+<style>
+:root{--bg:#0f1216;--card:#171c22;--line:#2a323c;--tx:#e6edf3;--dim:#9aa7b4;--ok:#3fb950;--warn:#d29922;--bad:#f85149;--acc:#58a6ff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.7 -apple-system,"Segoe UI","Microsoft YaHei",sans-serif}
+.wrap{max-width:1120px;margin:0 auto;padding:32px 20px 80px}
+h1{font-size:26px;margin:0 0 6px}h2{font-size:18px;margin:34px 0 12px;padding-left:10px;border-left:4px solid var(--acc)}
+h3{font-size:15px;margin:20px 0 8px;color:var(--acc)}
+.sub{color:var(--dim);font-size:13px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:12px 0}
+.card.ok{border-left:4px solid var(--ok)}.card.warn{border-left:4px solid var(--warn)}.card.bad{border-left:4px solid var(--bad)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:14px 0}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;text-align:center}
+.kpi b{display:block;font-size:24px;line-height:1.2}.kpi span{color:var(--dim);font-size:12px}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}
+th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{color:var(--dim);font-weight:600;background:#12171d}
+code{background:#11161c;border:1px solid var(--line);border-radius:4px;padding:1px 5px;font:12px/1.5 Consolas,monospace;word-break:break-all}
+.tag{display:inline-block;font-size:11px;padding:1px 7px;border-radius:20px;border:1px solid var(--line)}
+.t-safe{color:var(--bad);border-color:#5c2a28}.t-rev{color:var(--warn);border-color:#5a4520}.t-pro{color:var(--dim)}
+ul,ol{padding-left:22px}li{margin:5px 0}
+.foot{margin-top:40px;color:var(--dim);font-size:12px;border-top:1px solid var(--line);padding-top:14px}
+@media(max-width:640px){.wrap{padding:20px 14px}table{font-size:12px}}
+</style></head><body><div class="wrap">
+<h1>大白菜装机残留排查报告</h1>
+<div class="sub">2026-11-06 11:07:20 ｜ 主机 DESKTOP-LE6G559 ｜ 模式 纯只读 ｜ 系统安装于 2026-11-03</div>
+<div class="card bad"><strong>综合判断：置信度 高</strong><br>多项强特征吻合，系统确实被大白菜 PE 植入了推广/劫持</div>
+<div class="grid">
+<div class="kpi"><b style="color:var(--bad)">6</b><span>可处理（强特征）</span></div>
+<div class="kpi"><b style="color:var(--warn)">13</b><span>需人工确认</span></div>
+<div class="kpi"><b style="color:var(--dim)">2</b><span>保护项（不碰）</span></div>
+<div class="kpi"><b>21</b><span>发现项合计</span></div>
+</div>
+<h2>一、可处理项（命中强特征）（6）</h2>
+<table><tr><th style="width:70px">阶段</th><th style="width:110px">类别</th><th>对象</th><th style="width:32%">说明</th><th style="width:22%">建议</th></tr>
+<tr>
+<td>B 部署期</td>
+<td>无人值守文件</td>
+<td><strong>unattend.xml 命中大白菜装机特征</strong><br><code>C:\Windows\Panther\unattend.xml</code></td>
+<td>命中 RunSynchronousCommand x8、FirstLogonCommands x2、关闭 UAC 提示、启用 Administrator、启用 ploc 账户、指向随机名启动器；大小 2583 字节；写入时间 2026-11-03 10:21</td>
+<td>确认是 PE 装机残留后隔离（工具 -Quarantine 会移入隔离区）；OEM/企业部署也会写此文件，先看内容</td>
+</tr>
+<tr>
+<td>B 部署期</td>
+<td>随机名载荷目录</td>
+<td><strong>Vmaprlfxn（含加密分包）</strong><br><code>C:\Windows\Vmaprlfxn</code></td>
+<td>命中 10 个 .img/.ext 分包，合计 450.3 MB；exe 0 个</td>
+<td>与公开逆向样本一致（随机名目录 + 11 个加密安装包）。系统目录，工具不代删；确认后建议在 PE 下处理或手动隔离</td>
+</tr>
+<tr>
+<td>C 落地</td>
+<td>推广目录</td>
+<td><strong>360sd  @ C:\ProgramData</strong><br><code>C:\ProgramData\360sd</code></td>
+<td>确认属于 2345/360 等推广软件</td>
+<td>-Quarantine 可移入隔离区（不是直接删除），确认无用后再清空隔离区释放空间</td>
+</tr>
+<tr>
+<td>C 落地</td>
+<td>推广目录</td>
+<td><strong>360Chrome  @ C:\Users\Administrator\AppData\Local</strong><br><code>C:\Users\Administrator\AppData\Local\360Chrome</code></td>
+<td>确认属于 2345/360 等推广软件</td>
+<td>-Quarantine 可移入隔离区（不是直接删除），确认无用后再清空隔离区释放空间</td>
+</tr>
+<tr>
+<td>C 落地</td>
+<td>收藏夹</td>
+<td><strong>大白菜官网.URL</strong><br><code>C:\Users\Administrator\Favorites\Links\大白菜官网.URL</code></td>
+<td>收藏内容含推广域名（PE 会预置收藏夹文件）</td>
+<td>-Fix 会把这些 .url 移入隔离区，不是删除</td>
+</tr>
+<tr>
+<td>D 浏览器</td>
+<td>脚本缓存</td>
+<td><strong>Edge 缓存里含推广脚本 2 个</strong><br><code>C:\Users\Administrator\AppData\Local\Microsoft\Edge\User Data\Default\Code Cache\js</code></td>
+<td>Code Cache\js 中的编译缓存</td>
+<td>-Fix 会把这些文件移入隔离区；浏览器会自动重建缓存</td>
+</tr>
+</table>
+<h2>二、需要你确认的项（13）</h2>
+<table><tr><th style="width:70px">阶段</th><th style="width:110px">类别</th><th>对象</th><th style="width:32%">说明</th><th style="width:22%">建议</th></tr>
+<tr>
+<td>B 部署期</td>
+<td>UAC 状态</td>
+<td><strong>管理员提权不弹窗</strong><br><code>HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System</code></td>
+<td>ConsentPromptBehaviorAdmin=0，提权静默通过。常与 PE 无人值守脚本同现</td>
+<td>确认后可改为 5（默认：提示同意）</td>
+</tr>
+<tr>
+<td>A 源头</td>
+<td>装机记录</td>
+<td><strong>存在大白菜装机记录键</strong><br><code>HKLM:\SOFTWARE\DaBaiCai</code></td>
+<td>Version=6.0.2604.3；镜像=Win11_25H2_Pro_Chinese_Simplified_x64_v2.iso；渠道号 8 项：DriveTheLife=57459 , Taobao=cbdh956 , chaojituzi=lm , 2345explorer=511097 , 360se=5000783 , EdgeSetup=1773998236 , 360safe=5000782 , Chrome=1773998236</td>
+<td>这是溯源证据。删除它不会清除任何广告，但能确认系统来源；建议保留以备查</td>
+</tr>
+<tr>
+<td>A 源头</td>
+<td>镜像残留</td>
+<td><strong>疑似装机镜像：Win11_25H2_Pro_Chinese_Simplified_x64_v2.iso</strong><br><code>D:\Win11_25H2_Pro_Chinese_Simplified_x64_v2.iso</code></td>
+<td>7897 MB；就是这次装机的源文件</td>
+<td>确认系统已装好、不需要回滚后再删；也可留作证据</td>
+</tr>
+<tr>
+<td>C 落地</td>
+<td>近期安装</td>
+<td><strong>火绒安全软件</strong><br><code>Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\HuorongSysdiag</code></td>
+<td>安装日期=2026-11-03；发布者=北京火绒网络科技有限公司；版本=6.0.13.0</td>
+<td>对照清单确认是否自己装的；不是就走系统卸载，再用 Geek Uninstaller 扫残留</td>
+</tr>
+<tr>
+<td>C 落地</td>
+<td>近期安装</td>
+<td><strong>CC Switch</strong><br><code>Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{DF33B2A8-7877-42D0-AE54-C67F9DA1D085}</code></td>
+<td>安装日期=2026-11-03；发布者=ccswitch；版本=4.0.25</td>
+<td>对照清单确认是否自己装的；不是就走系统卸载，再用 Geek Uninstaller 扫残留</td>
+</tr>
+<tr>
+<td>C 落地</td>
+<td>近期安装</td>
+<td><strong>AutoShop 版本 V4.12.0.2</strong><br><code>Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{5B4FF3A9-D03B-4911-83DF-3A28262438A0}_is1</code></td>
+<td>安装日期=2026-11-03；发布者=Inovance Technology Co., Ltd；版本=V4.12.0.2</td>
+<td>对照清单确认是否自己装的；不是就走系统卸载，再用 Geek Uninstaller 扫残留</td>
+</tr>
+<tr>
+<td>C 落地</td>
+<td>近期安装</td>
+<td><strong>DTools Pro V1.20.0</strong><br><code>Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{AE237AF1-5A01-4232-B15A-B53F2CF74720}</code></td>
+<td>安装日期=2026-11-03；发布者=Kinco；版本=1.20</td>
+<td>对照清单确认是否自己装的；不是就走系统卸载，再用 Geek Uninstaller 扫残留</td>
+</tr>
+<tr>
+<td>C 落地</td>
+<td>近期安装</td>
+<td><strong>EBpro V6.10.02.421s</strong><br><code>Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{EE198B2E-B0DD-4123-8E74-E1BBFEC8C8D8}_is1</code></td>
+<td>安装日期=2026-11-03；发布者=Weintek Labs., Inc.；版本=</td>
+<td>对照清单确认是否自己装的；不是就走系统卸载，再用 Geek Uninstaller 扫残留</td>
+</tr>
+<tr>
+<td>C 落地</td>
+<td>近期安装</td>
+<td><strong>ima</strong><br><code>Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\ima.copilot</code></td>
+<td>安装日期=2026-11-03；发布者=The ima.copilot Authors；版本=2.6.16.5304</td>
+<td>对照清单确认是否自己装的；不是就走系统卸载，再用 Geek Uninstaller 扫残留</td>
+</tr>
+<tr>
+<td>C 落地</td>
+<td>近期安装</td>
+<td><strong>TRAE CN (User)</strong><br><code>Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{98EB0EF0-1DE3-4838-B14A-3B0DC4570E8B}_is1</code></td>
+<td>安装日期=2026-11-05；发布者=Beijing Yinli Catapult Technology Co., Ltd.；版本=3.4.15</td>
+<td>对照清单确认是否自己装的；不是就走系统卸载，再用 Geek Uninstaller 扫残留</td>
+</tr>
+<tr>
+<td>C 落地</td>
+<td>代理设置</td>
+<td><strong>系统代理处于启用状态</strong><br><code>HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings</code></td>
+<td>ProxyServer=127.0.0.1:7897；Override=localhost;127.*;192.168.*;10.*;172.16.*;172.17.*;172.18.*;172.19.*;172.20.*;172.21.*;172.22.*;172.23.*;172.24.*;172.25.*;172.26.*;172.27.*;172.28.*;172.29.*;172.30.*;172.31.*;*.local;&lt;local&gt;</td>
+<td>大概率是你自己的代理工具。工具不会改代理；确认不是自己的再手动关</td>
+</tr>
+<tr>
+<td>C 落地</td>
+<td>文件关联</td>
+<td><strong>.html 被指向 360seURL</strong><br><code>HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.html\UserChoice</code></td>
+<td>UserChoice 带哈希校验，直接改注册表会被系统重置</td>
+<td>走「设置 → 应用 → 默认应用」改回 Edge/Chrome，工具不碰</td>
+</tr>
+<tr>
+<td>D 浏览器</td>
+<td>首次运行配置</td>
+<td><strong>Chrome 存在 initial_preferences</strong><br><code>C:\Program Files\Google\Chrome\Application\initial_preferences</code></td>
+<td>大小 421617 字节，未命中推广特征</td>
+<td>大概率是 OEM 定制，可保留</td>
+</tr>
+</table>
+<h2>三、工具不会碰的项（2）</h2>
+<table><tr><th style="width:70px">阶段</th><th style="width:110px">类别</th><th>对象</th><th style="width:32%">说明</th><th style="width:22%">建议</th></tr>
+<tr>
+<td>C 落地</td>
+<td>近期安装</td>
+<td><strong>系统组件 / 运行库 56 项</strong></td>
+<td>发布者为微软等大厂，或属于 VC++ / .NET / WebView2 等运行库</td>
+<td>正常，无需处理</td>
+</tr>
+<tr>
+<td>E 残留</td>
+<td>临时目录</td>
+<td><strong>Windows\Temp 共 0 项</strong><br><code>C:\Windows\Temp</code></td>
+<td>体积约 0 MB</td>
+<td>系统临时目录，工具不碰；要清就走「存储 → 临时文件」</td>
+</tr>
+</table>
+<h2>五、这套东西是怎么进来的</h2>
+<table><tr><th style="width:120px">阶段</th><th>具体行为</th><th style="width:28%">落地痕迹</th></tr>
+<tr><td>制作 U 盘</td><td>默认勾选「赞助商主页 / 绿色软件」，推广配置写进 PE 镜像</td><td>制作工具个性设置、<code>HKLM\SOFTWARE\DaBaiCai</code></td></tr>
+<tr><td>PE 启动</td><td><code>X:\windows\Packages\System32.7z</code>、<code>PF.7z</code> 解压出部署程序 <code>NUML0CK.EXE</code></td><td>PE 内 System32、U 盘 <code>\PE\DBC8x64.ISO</code></td></tr>
+<tr><td>释放镜像</td><td>在 <code>C:\Windows\&lt;随机名&gt;\</code> 放随机名启动器 + 十余个加密 <code>.img/.ext</code> 安装包</td><td>随机名目录、数百 MB 分包</td></tr>
+<tr><td>无人值守</td><td>写 <code>Panther\unattend.xml</code>：启用 Administrator、关 UAC、首次登录自动拉起启动器</td><td><code>RunSynchronousCommand</code>、<code>ConsentPromptBehaviorAdmin=0</code></td></tr>
+<tr><td>首次进桌面</td><td>静默装 360 全家桶 / 2345 / 腾讯视频 / 爱奇艺 / 老黄历 / WPS，改主页与收藏夹，启动器自删</td><td>安装日期与会话/配置里的推广域名</td></tr>
+<tr><td>持续复发</td><td>计划任务、WMI 订阅、组策略键、安全软件「主页锁定」、浏览器会话恢复</td><td>本报告 B / C / D 层</td></tr>
+</table>
+<div class="card warn"><strong>关键结论：</strong>用微软原版纯净 ISO 也挡不住——植入发生在 PE 阶段、系统首次启动之前。所以「装完再删」只能治标，<strong>去源头重做启动盘 / 换微PE、优启通 + 官方 ISO</strong>才治本。</div>
+<h2>六、工具不做、但你应该做的</h2>
+<ol>
+<li><strong>恢复 UAC</strong>：<code>EnableLUA=1</code>、<code>ConsentPromptBehaviorAdmin=5</code>，改前导出注册表键。</li>
+<li><strong>改回默认应用</strong>：<code>.html</code> 与 <code>http/https</code> 若指向 360seURL，走「设置 → 应用 → 默认应用」改回，别手改注册表（UserChoice 有哈希校验）。</li>
+<li><strong>卸软件走正规卸载</strong>：设置 → 应用 → 按安装日期排序，卸完用 Geek Uninstaller / Revo 扫残留。</li>
+<li><strong>清旧系统</strong>：设置 → 系统 → 存储 → 临时文件 → 删除以前版本的 Windows。不要手删 Windows.old。</li>
+<li><strong>浏览器内再收一遍</strong>：<code>edge://settings/startHomeNTP</code> 选「打开新标签页」；<code>edge://settings/content/all</code> 搜推广域名删站点数据。</li>
+<li><strong>治本</strong>：大白菜制作器 → 个性设置 → 支持我们 → 取消全部推广 → 保存设置 → <em>重新制作</em>；或直接换微PE / 优启通。</li>
+</ol>
+<h2>七、工具边界</h2>
+<div class="card">
+<p><strong>只做可逆动作</strong>：改名、移动、注释、禁用、导出备份。移入隔离区不等于释放空间，确认无误后手动清空隔离目录才省空间。</p>
+<p><strong>绝不自动处理</strong>：<code>unattend.xml</code>、<code>C:\Windows\&lt;随机名&gt;</code>、系统服务与驱动、UAC、组策略键、hosts 之外的系统文件、<code>Windows.old</code>、用户账户、代理设置。这些要么在系统目录、要么可能是你自己的开发/调试环境配置。</p>
+<p><strong>白名单保护</strong>：PlatformIO、Arduino、Python、VS Code、CH340/CP210x/FTDI 驱动等开发工具不会被判为推广软件。</p>
+<p><strong>已知不完美</strong>：随机名启发式可能漏判新版变体；浏览器 <code>Secure Preferences</code> 受 MAC 保护，工具不碰；会话文件在浏览器运行时会被独占，必须先完全退出浏览器再修。</p>
+</div>
+<h2>八、情报来源与可信度</h2>
+<table><tr><th>来源</th><th>内容</th><th style="width:90px">可信度</th></tr>
+<tr><td>大白菜官网帮助页 help_107</td><td>官方取消赞助商流程、机器码换解锁码</td><td>高（官方）</td></tr>
+<tr><td>火绒安全 病毒分析报告 834 / 794</td><td>互泰旗下 PE 植入、删除安全软件、NUML0CK 为 AutoIt 编译</td><td>高（厂商研究）</td></tr>
+<tr><td>SecPulse「这大白菜有毒」</td><td>进程内存中的推广清单、备案主体</td><td>中高（逆向）</td></tr>
+<tr><td>社区逆向「某白菜 PE 行为分析」</td><td>随机名启动器、11 个加密 img、unattend.xml 字段</td><td>中高（有实验复现）</td></tr>
+<tr><td>wityx / CSDN 解包实测</td><td><code>System32.7z</code> ≈ 5087KB、删除后推广消失</td><td>中</td></tr>
+<tr><td>2345 装机联盟官方计费页</td><td>浏览器 3.2–6.6 元/台、导航按访问计费 → 动机闭环</td><td>高（官方）</td></tr>
+<tr><td>微软官方支持文档</td><td>删除以前版本的 Windows 的正确路径</td><td>高（官方）</td></tr>
+</table>
+<div class="card warn"><strong>已知不实信息：</strong>CSDN 上部分「大白菜去广告」问答为 AI 生成内容农场（页面带 AI 选题/分发推广），其中 <code>check.adbaidu.cn</code>、<code>DabaiCaiService.exe</code>、<code>adblock=1 noads=1</code> 等均查无佐证，<code>reg delete /f</code> 照做会误伤系统。本工具未采信。</div>
+<div class="foot">DBC Sweeper ｜ 报告生成于 2026-11-06 11:07:20 ｜ 数据文件：<code>findings.json</code>、<code>ioc_db.json</code>、<code>actions.json</code> ｜ 本报告只反映扫描时刻的状态</div>
+</div></body></html>
